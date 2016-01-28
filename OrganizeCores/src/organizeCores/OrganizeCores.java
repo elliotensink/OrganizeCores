@@ -223,8 +223,12 @@ public class OrganizeCores
 		File coreImage;
 		for(String[] info : coresInfo)
 		{
-			coreFolder = new File(coreLocation + "\\" + info[0]);
-			coreImage = new File(coreLocation + "\\" + info[1]+info[2]);
+			String core = cleanString(info[0]);
+			String imgName = cleanString(info[1]);
+			String scanName = cleanString(info[2]);
+			
+			coreFolder = new File(coreLocation + "\\" + core);
+			coreImage = new File(coreLocation + "\\" + imgName+scanName);
 			if(!coreFolder.exists())
 			{
 				coreFolder.mkdir();
@@ -235,6 +239,16 @@ public class OrganizeCores
 			}
 
 		}
+	}
+	
+	private String cleanString(String str)
+	{
+		if(str.substring(0,1).equals("\""))
+			str = str.substring(1);
+		if(str.substring(str.length()-1).equals("\""))
+			str = str.substring(0,str.length()-1);
+		
+		return str;
 	}
 	
 	private class ButtonListener implements ActionListener 
