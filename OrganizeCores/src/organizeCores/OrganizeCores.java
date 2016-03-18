@@ -300,70 +300,81 @@ public class OrganizeCores
 		File coreImage;
 		coreFolder = new File(coreLocation);
 		File[] allFiles = coreFolder.listFiles();
-		for(File f : allFiles)
+		String[] allFileNames = new String[allFiles.length];
+		for(int i = 0; i < allFiles.length; i++)
 		{
-			System.out.println(f.toString());
+			File f = allFiles[i];
+			allFileNames[i] = f.getName();
+			//System.out.println(f.toString());
 		}
-//		for(String[] info : coresInfo)
-//		{
-//			String core = cleanString(info[0]);
-//			String imgName = cleanString(info[1]);
-//			String scanName = cleanString(info[2]);
-//
-//			coreFolder = new File(coreLocation + "\\" + core);
-//			coreImage = new File(coreLocation + "\\" + imgName+scanName);
-//			if(!coreFolder.exists())
-//			{
-//				coreFolder.mkdir();
-//				try 
-//				{
-//					today = new Date();
-//					bw.write("Created core folder: " + coreFolder.getName() + " "+ today.toString());
-//					bw.newLine();
-//				} 
-//				catch (IOException e) 
-//				{
-//					System.out.println("No log file 2");
-//				}
-//			}
-//			try 
-//			{
-//				today = new Date();
-//				bw.write("Original file location: " + coreImage.getAbsolutePath() + " "+ today.toString());
-//				bw.newLine();
-//			} 
-//			catch (IOException e) 
-//			{
-//				System.out.println("No log file 3");
-//			}
-//			if(coreImage.renameTo(new File(coreFolder.getAbsolutePath() + "\\" + coreImage.getName())))
-//			{
-//				try 
-//				{
-//					today = new Date();
-//					bw.write("Moved file to: " + coreImage.getAbsolutePath() + " "+ today.toString());
-//					bw.newLine();
-//				} 
-//				catch (IOException e) 
-//				{
-//					System.out.println("No log file 4");
-//				}
-//			}
-//			else
-//			{
-//				try 
-//				{
-//					today = new Date();
-//					bw.write("Move Failed: " + coreImage.getName() + " "+ today.toString());
-//					bw.newLine();
-//				} 
-//				catch (IOException e) 
-//				{
-//					System.out.println("No log file 5");
-//				}
-//			}
-//
-//		}
+		for(String[] info : coresInfo)
+		{
+			String core = cleanString(info[0]);
+			String scanName = cleanString(info[1]);
+			String imgName = "";
+
+			coreFolder = new File(coreLocation + "\\" + core);
+			for(int i = 0; i < allFiles.length; i++)
+			{
+				if(allFileNames[i].contains(scanName))
+				{
+					imgName = allFileNames[i];
+					break;
+				}
+			}
+			coreImage = new File(coreLocation + "\\" + imgName);
+			if(!coreFolder.exists())
+			{
+				coreFolder.mkdir();
+				try 
+				{
+					today = new Date();
+					bw.write("Created core folder: " + coreFolder.getName() + " "+ today.toString());
+					bw.newLine();
+				} 
+				catch (IOException e) 
+				{
+					System.out.println("No log file 2");
+				}
+			}
+			try 
+			{
+				today = new Date();
+				bw.write("Original file location: " + coreImage.getAbsolutePath() + " "+ today.toString());
+				bw.newLine();
+			} 
+			catch (IOException e) 
+			{
+				System.out.println("No log file 3");
+			}
+			if(coreImage.renameTo(new File(coreFolder.getAbsolutePath() + "\\" + coreImage.getName())))
+			{
+				try 
+				{
+					today = new Date();
+					bw.write("Moved file to: " + coreImage.getAbsolutePath() + " "+ today.toString());
+					bw.newLine();
+				} 
+				catch (IOException e) 
+				{
+					System.out.println("No log file 4");
+				}
+			}
+			else
+			{
+				try 
+				{
+					today = new Date();
+					bw.write("Move Failed: " + coreImage.getName() + " "+ today.toString());
+					bw.newLine();
+				} 
+				catch (IOException e) 
+				{
+					System.out.println("No log file 5");
+				}
+			}
+
+		}
 	}
 
 	private String cleanString(String str)
