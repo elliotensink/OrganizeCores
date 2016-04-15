@@ -218,7 +218,7 @@ public class OrganizeCores
 					bw.write("Calculated file line numbers " + today.toString());
 					bw.newLine();
 				} 
-				catch (IOException e) 
+				catch (IOException e)
 				{
 					e.printStackTrace();
 				}
@@ -312,11 +312,20 @@ public class OrganizeCores
 			String core = cleanString(info[0]);
 			String scanName = cleanString(info[1]);
 			String imgName = "";
+			String[] coordinates = scanName.split(",");
+			String coord1 = coordinates[0];
+			String coord2 = coordinates[1];
 
 			coreFolder = new File(coreLocation + "\\" + core);
 			for(int i = 0; i < allFiles.length; i++)
 			{
-				if(allFileNames[i].contains(scanName))
+				int openBracketIndex = allFileNames[i].indexOf('[');
+				int closedBracketIndex = allFileNames[i].indexOf(']');
+				String bracketName = allFileNames[i].substring(openBracketIndex+1, closedBracketIndex);
+				String[] fileCoordinates = bracketName.split(",");
+				String fileCoord1 = fileCoordinates[0];
+				String fileCoord2 = fileCoordinates[1];
+				if(coord1.equals(fileCoord1.substring(0,3)) && coord2.equals(fileCoord2.substring(0,3)))
 				{
 					imgName = allFileNames[i];
 					break;
@@ -391,6 +400,7 @@ public class OrganizeCores
 	{ 
 		public void actionPerformed(ActionEvent event) 
 		{
+			//\\files\Research\Haab.Lab\Personal folders\_Elliot\JAVA\OrganizeCores\v3coreMapSample.txt
 			if(event.getSource() == browse)
 			{
 				coreRefMap = getFile();
@@ -408,7 +418,22 @@ public class OrganizeCores
 			}
 			else if(event.getSource() == organize)
 			{
+				boolean ableToOrganize = false;
 				if(coreRefMap != null)
+				{
+					ableToOrganize = true;
+				}
+				else
+				{
+					if(!textField.getText().equals(""))
+					{
+						coreRefMap =  new File(textField.getText());
+						ableToOrganize = true;
+					}
+				}
+				
+				
+				if(ableToOrganize)
 				{
 					try
 					{
